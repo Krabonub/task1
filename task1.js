@@ -27,6 +27,9 @@ textInput.oninput = function(){
             return item;
         }
     });
+    var floatNumbersArr = textInput.value
+    .replace(/\D/g, " ")
+    .split(" ")
     //1
     listElement1.innerText = textInput.value.length;
     //2
@@ -62,7 +65,7 @@ textInput.oninput = function(){
         else return "[To long number]"
     });
     //6
-
+    listElement6.innerText='';
     //7
     listElement7.innerText = numbersArr.reduce(function(previousValue, currentItem, index, arr){
         return +previousValue + +currentItem;
