@@ -14,9 +14,9 @@ var listElement10 = document.getElementById('t2listElement10');
 objectInput.oninput = function(){
     
     if(objectInput.value.match(/([A-Za-z0-9-]+)\:([A-Za-z0-9-]+)/g)){
-        listElement1.innerText = objectInput.value;
+        listElement1.innerText = true;
     }
     else{
-
+        listElement1.innerText = false;
     }
 }
