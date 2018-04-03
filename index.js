@@ -114,7 +114,8 @@ function maxNumber(str){
 //9
 function equalityCheck(str){
     var numbersArr = integersArr(str);
-    return numbersArr?!!numbersArr.reduce(function(previousValue, currentItem, index, arr){
+    console.log(numbersArr);
+    return numbersArr.length? !!numbersArr.reduce(function(previousValue, currentItem, index, arr){
         if(previousValue === currentItem){
             return currentItem;
         }
