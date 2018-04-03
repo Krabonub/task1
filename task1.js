@@ -16,10 +16,11 @@ function randomInteger(min, max) {
     rand = Math.round(rand);
     return rand;
 }
-
-textInput.oninput = function(){
-    var inputArr = textInput.value.split('');
-    var numbersArr = textInput.value
+function stringToArr(str){
+    return str.split('');
+}
+function integersArr(str){
+    return str
     .replace(/\D/g, " ")
     .split(" ")
     .filter(function(item, index, arr){
@@ -27,34 +28,40 @@ textInput.oninput = function(){
             return item;
         }
     });
-    var floatNumbersArr = textInput.value
-    .replace(/\D/g, " ")
-    .split(" ")
-    //1
-    listElement1.innerText = textInput.value.length;
-    //2
+}
+//1
+function textLength(str){
+    return str.length;
+}
+//2
+function textWithoutSigns(str){
     var unacceptable = [' ', '!', '@', '"', ';', '{', '}', '*', '&', '^', '%', '(', ')', '$', '#'];
-    var tmpInput = inputArr.filter(function(item, index, arr){
+    var inputArr = stringToArr(str);
+    return inputArr
+    .filter(function(item, index, arr){
         for(var i in unacceptable){
             if(item === unacceptable[i]){
                 return false;
             }
         }
         return true;
-    });
-    listElement2.innerText = tmpInput.join('');
-    //3
-    var wordsNumber = inputArr.length ? 1: 0;
-    inputArr.map(function(item, i, arr){
-        if(item === ' ' && arr[i+1]!==' '){
-            wordsNumber++;
-        }
-    });
-    listElement3.innerText = wordsNumber;
-    //4
-    listElement4.innerText = numbersArr.length;
-    //5
-    listElement5.innerText = numbersArr.map(function(item, index, arr){
+    }).join('');
+}
+//3
+function numberOfWords(str){
+    return wordsNumber = str.split(' ').filter(function(item, i, arr){
+        return item!==''?true:false;
+    }).length;
+}
+//4
+function integersNumber(str){
+    var numbersArr = integersArr(str);
+    return numbersArr.length;
+}
+//5
+function formatedIntegers(str){
+    var numbersArr = integersArr(str);
+    return numbersArr.map(function(item, index, arr){
         if(item.length <= 6){
             var tmp = '';
             for(var i=0 ; i < 6 - String(item).length; i++){
@@ -62,25 +69,73 @@ textInput.oninput = function(){
             }
             return tmp+String(item);
         }
-        else return "[To long number]"
+        else return "[To long number!]"
     });
-    //6
-    listElement6.innerText='';
-    //7
-    listElement7.innerText = numbersArr.reduce(function(previousValue, currentItem, index, arr){
+}
+//6
+function formatedFloats(str){ 
+   var tmp = str.match(/\d+\.\d+/g);
+   return tmp ? tmp
+    .map(function(item, i, arr){
+        var intZeroes = '';
+        var floatZeroes = '';
+        var devidedItem = item.split('.');
+        if(String(devidedItem[0]).length <= 6){
+            for(var i = 0; i < 6 - String(devidedItem[0]).length; i++){
+                intZeroes += '0';
+            }
+        }
+        else{
+            return "[To long number!]"
+        }
+        devidedItem[1] = devidedItem[1].charAt(0) + devidedItem[1].charAt(1);
+        for(var i = 0; i < 2 - String(devidedItem[1]).length; i++){
+            floatZeroes += '0';
+        }
+        devidedItem[0] = intZeroes + String(devidedItem[0]);
+        devidedItem[1] = String(devidedItem[1]) + floatZeroes;
+        return devidedItem[0]+'.'+devidedItem[1];
+    }):'';
+}
+//7
+function numbersSum(str){
+    var numbersArr = integersArr(str);
+    return numbersArr.reduce(function(previousValue, currentItem, index, arr){
         return +previousValue + +currentItem;
     },0);
-    //8
-    listElement8.innerText = numbersArr.reduce(function(previousValue, currentItem, index, arr){
+}
+//8
+function maxNumber(str){
+    var numbersArr = integersArr(str);
+    return numbersArr.reduce(function(previousValue, currentItem, index, arr){
         return (+currentItem > +previousValue)? +currentItem : +previousValue;
     },0);
-    //9
-    listElement9.innerText = !!numbersArr.reduce(function(previousValue, currentItem, index, arr){
+}
+//9
+function equalityCheck(str){
+    var numbersArr = integersArr(str);
+    return numbersArr?!!numbersArr.reduce(function(previousValue, currentItem, index, arr){
         if(previousValue === currentItem){
             return currentItem;
         }
         else return false;
-    });
-    //10
-    listElement10.innerText = numbersArr[randomInteger(0, numbersArr.length-1)];
+    }):'';
+}
+//10
+function randomNumber(str){
+    var numbersArr = integersArr(str);
+    return numbersArr[randomInteger(0, numbersArr.length-1)];
+}
+
+textInput.oninput = function(){
+    listElement1.innerText = textLength(textInput.value);
+    listElement2.innerText = textWithoutSigns(textInput.value);
+    listElement3.innerText = numberOfWords(textInput.value);
+    listElement4.innerText = integersNumber(textInput.value);
+    listElement5.innerText = formatedIntegers(textInput.value);
+    listElement6.innerText = formatedFloats(textInput.value);
+    listElement7.innerText = numbersSum(textInput.value);
+    listElement8.innerText = maxNumber(textInput.value);
+    listElement9.innerText = equalityCheck(textInput.value);
+    listElement10.innerText = randomNumber(textInput.value);
 }
