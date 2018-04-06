@@ -21,13 +21,23 @@ function stringToArr(str){
 }
 function integersArr(str){
     return str
+    .replace(/\d+\.\d+/g, " ")
     .replace(/\D/g, " ")
     .split(" ")
     .filter(function(item, index, arr){
         if(item.length){
             return item;
         }
+    })
+    .map(function(item, index, arr){
+        return +item;
     });
+}
+function floatsArr(str){
+    var match = str.match(/\d+\.\d+/g);
+    return !!match ?  str.match(/\d+\.\d+/g).map(function(item, index, arr){
+        return +item;
+    }): [];
 }
 //1
 function textLength(str){
@@ -55,38 +65,38 @@ function numberOfWords(str){
 }
 //4
 function integersNumber(str){
-    var numbersArr = integersArr(str);
+    var numbersArr = integersArr(str).concat(floatsArr(str));
     return numbersArr.length;
 }
 //5
 function formatedIntegers(str){
     var numbersArr = integersArr(str);
     return numbersArr.map(function(item, index, arr){
-        if(item.length <= 6){
+        if(String(item).length <= 6){
             var tmp = '';
             for(var i=0 ; i < 6 - String(item).length; i++){
                 tmp += '0';
             }
-            return tmp+String(item);
+            return tmp + String(item);
         }
-        else return "[To long number!]"
+        else return "[To long number!]";
     });
 }
 //6
 function formatedFloats(str){ 
-   var tmp = str.match(/\d+\.\d+/g);
+   var tmp = floatsArr(str);
    return tmp ? tmp
     .map(function(item, i, arr){
         var intZeroes = '';
         var floatZeroes = '';
-        var devidedItem = item.split('.');
+        var devidedItem = String(item).split('.');
         if(String(devidedItem[0]).length <= 6){
             for(var i = 0; i < 6 - String(devidedItem[0]).length; i++){
                 intZeroes += '0';
             }
         }
         else{
-            return "[To long number!]"
+            return "[To long number!]";
         }
         devidedItem[1] = devidedItem[1].charAt(0) + devidedItem[1].charAt(1);
         for(var i = 0; i < 2 - String(devidedItem[1]).length; i++){
@@ -99,22 +109,21 @@ function formatedFloats(str){
 }
 //7
 function numbersSum(str){
-    var numbersArr = integersArr(str);
+    var numbersArr = integersArr(str).concat(floatsArr(str));
     return numbersArr.reduce(function(previousValue, currentItem, index, arr){
         return +previousValue + +currentItem;
     },0);
 }
 //8
 function maxNumber(str){
-    var numbersArr = integersArr(str);
+    var numbersArr = integersArr(str).concat(floatsArr(str));
     return numbersArr.reduce(function(previousValue, currentItem, index, arr){
         return (+currentItem > +previousValue)? +currentItem : +previousValue;
     },0);
 }
 //9
 function equalityCheck(str){
-    var numbersArr = integersArr(str);
-    console.log(numbersArr);
+    var numbersArr = integersArr(str).concat(floatsArr(str));
     return numbersArr.length? !!numbersArr.reduce(function(previousValue, currentItem, index, arr){
         if(previousValue === currentItem){
             return currentItem;
@@ -124,7 +133,7 @@ function equalityCheck(str){
 }
 //10
 function randomNumber(str){
-    var numbersArr = integersArr(str);
+    var numbersArr = integersArr(str).concat(floatsArr(str));
     return numbersArr[randomInteger(0, numbersArr.length-1)];
 }
 
